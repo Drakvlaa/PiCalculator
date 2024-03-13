@@ -1,30 +1,29 @@
-import java.math.BigDecimal;
-import java.math.MathContext;
 import java.util.Scanner;
+public class PICalculator{
 
-public class PICalculator {
+  
   public static void main(String[] args) {
-    Scanner scanner = new Scanner(System.in);
-    System.out.println("podaj dokładność z jaką chcesz obliczyć liczbę PI:");
-    int precyzja = scanner.nextInt(); // dokładność liczby PI
-    scanner.close();
-    MathContext mc = new MathContext(precyzja);
-
-    BigDecimal suma = new BigDecimal(0, mc);
-
-    int iloscIteracji = 10000; // ilosc wykonań pętli
-
-    // obliczanie pi używając wzoru Gregory-Leibniz'a
-    for (int i = 1; i <= iloscIteracji; i++) {
-      BigDecimal wyraz = new BigDecimal(4, mc).divide(new BigDecimal(2 * i - 1, mc), mc);
-
-      if (i % 2 == 0) {
-        suma = suma.subtract(wyraz, mc);
-      } else {
-        suma = suma.add(wyraz, mc);
-      }
-    }
-
-    System.out.println("Wartość liczby pi z dokładnością do " + precyzja + " miejsc po przecinku: \n" + suma);
-  }
+    PICalculator test = new PICalculator();
+    System.out.println("podaj z jaką dokładnością  chciałbyś obliczyć liczbę PI");
+    Scanner sc  = new Scanner(System.in);
+    int ac = sc.nextInt();
+    System.out.print("Liczba PI z dokładnością " + ac + " wynosi: ");
+		System.out.println(test.leibnizPi(-ac));
+	}
+	
+	public double leibnizPi(int accuracy) {
+		double target_accuracy = Math.pow(10, accuracy);
+		
+		double acc = 1.0;
+		int sub = 3;
+		int sign = -1;
+		
+		while ( Math.abs(4.0 * acc - Math.PI) > target_accuracy ) {
+			acc += sign * ( 1.0 / sub );
+			sign *= -1;
+			sub += 2;
+		}
+		
+		return 4.0 * acc;
+	}
 }
